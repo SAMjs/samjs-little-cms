@@ -9,5 +9,4 @@ router.add /login/, -> require.ensure ["./login/login.coffee"], (require) ->
   require "./login/login.coffee"
 router.add /logout/, -> require.ensure ["./login/logout.coffee"], (require) ->
   require "./login/logout.coffee"
-router.add -> setState(false)
 router.check().listen()
