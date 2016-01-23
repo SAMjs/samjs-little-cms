@@ -1,0 +1,15 @@
+//- out: ../app_build
+doctype html
+html(lang="de")
+  head
+    meta(charset="utf-8")
+    title Samjs little cms
+    meta(name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no")
+    link(rel="stylesheet" href="index.css")
+  body#body
+    .container
+      .header
+      #content
+        #main.main
+          include:marked main.md
+    script(src="index.js")

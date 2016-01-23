@@ -1,0 +1,58 @@
+@import "~vue-materialize/sass/prefixer";
+@import "~vue-materialize/sass/mixins";
+@import "~vue-materialize/sass/color";
+@include do("include-color","black", "base");
+@include do("include-color","white", "base");
+//include-color("cyan", "accent-1");
+//include-color("cyan", "accent-2");
+//include-color("cyan", "accent-3");
+//include-color("cyan", "accent-4");
+//include-color("cyan", "lighten-5");
+//include-color("cyan", "lighten-4");
+//include-color("cyan", "lighten-3");
+//include-color("cyan", "lighten-2");
+//include-color("cyan", "lighten-1");
+//include-color("cyan", "base");
+//include-color("purple", "darken-1");
+//include-color("purple", "darken-2");
+//include-color("purple", "darken-3");
+//include-color("purple", "darken-4");
+//include-color("black", "base");
+//include-color("white", "base");
+//include-color("grey", "lighten-4");
+$primary-color: color("cyan","base");
+$card-link-color: color("purple","darken-3");
+@import "~vue-materialize/sass/variables";
+@import "~vue-materialize/sass/colorProcessor";
+
+@import "~vue-materialize/sass/normalize";
+
+@import "~vue-materialize/sass/global";
+// css only
+// @import "~vue-materialize/sass/icons-material-design";
+//@import "~vue-materialize/sass/roboto";
+//@import "~vue-materialize/sass/typography";
+@import "~vue-materialize/sass/buttons";
+//@import "~vue-materialize/sass/grid";
+//@import "~vue-materialize/sass/navbar";
+//@import "~vue-materialize/sass/table_of_contents";
+//@import "~vue-materialize/sass/preloader";
+
+
+// css for js modules
+// @import "~vue-materialize/sass/sideNav";
+// @import "~vue-materialize/sass/waves";
+@import "~vue-materialize/sass/cards";
+// @import "~vue-materialize/sass/toast";
+// @import "~vue-materialize/sass/tabs";
+// @import "~vue-materialize/sass/tooltip";
+// @import "~vue-materialize/sass/dropdown";
+// @import "~vue-materialize/sass/modal";
+// @import "~vue-materialize/sass/collapsible";
+// @import "~vue-materialize/sass/materialbox";
+//@import "~vue-materialize/sass/form";
+@import "~vue-materialize/sass/input-field";
+// @import "~vue-materialize/sass/slider";
+// @import "~vue-materialize/sass/date_picker/default.scss";
+// @import "~vue-materialize/sass/date_picker/default.date.scss";
+// @import "~vue-materialize/sass/date_picker/default.time.scss";

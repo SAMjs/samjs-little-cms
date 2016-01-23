@@ -1,0 +1,9 @@
+node_modules
+*.sublime-project
+*.sublime-workspace
+npm-debug.log
+app_build
+app_deploy
+server.config
+*.pdf
+nohup.out
