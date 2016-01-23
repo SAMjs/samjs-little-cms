@@ -31,7 +31,7 @@ modal#login(style="max-width:30rem;min-height:20.2rem" @hide="reset" v-ref:modal
     button.btn(@click="click" v-bind:disabled="state.active" v-bind:class="{disabled:state.active||!state.complete}" tabindex="0") Absenden
 
 
-    .failed(v-show="state.failed") Fehlgeschlagen
+    .failed(v-show="state.failed") Failed
 </template>
 
 <script lang="coffee">

@@ -19,7 +19,7 @@
       input-field(
         v-ref:nameinput
         input-id="username"
-        label="Benutzername"
+        label="Username"
         icon="icon-user"
         v-bind:on-confirm="focusPw"
       )
@@ -27,14 +27,14 @@
         v-ref:pwinput
         input-id="password"
         v-bind:validate="validatePw"
-        data-error="mind. 8 Zeichen"
-        label="Passwort"
+        data-error="use at least 8 characters"
+        label="Password"
         type="password"
         icon="icon-user"
         v-bind:on-confirm="saveUser"
       )
     .card-action.right-align(v-bind:v-if="$refs.nameinput.value && $refs.pwinput.isValid")
-      a(@click="saveUser") ok
+      a(@click="saveUser") Save
   .card.black-text(
     v-el:finished
     tabindex="-1"
@@ -62,8 +62,9 @@ module.exports =
   methods:
     goUser: ->
       @state = "user"
+      @$refs.nameinput.value = "root"
       @$nextTick =>
-        @$refs.nameinput.focus()
+        @focusPw()
     goFinished: ->
       @state = "finished"
       @$nextTick =>
