@@ -25,7 +25,7 @@ fs.writeFileSync "#{p.app_build}/install.html",
 
 koa = require("koa")()
 koa.use serve(p.app_build,index:false,maxage: maxage)
-koa.use serve(p.resources)
+koa.use serve(p.resources,hidden:true)
 koa.use ->
   yield sendfile.call(@, index)
 
