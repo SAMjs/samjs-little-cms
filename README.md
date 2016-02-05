@@ -15,6 +15,10 @@ Clone repository and run `npm install`
  - make the specific markdown files accessible in `/server/models.coffee`
  - link up a editButton to each of your markdown includes (see `/app/login/login.coffee`)
 
+```sh
+npm run watch
+```
+will fire up a self reloading webserver on [http://localhost:3000](http://localhost:3000)
 ## Deploy
 (have a look at [pod](https://github.com/yyx990803/pod))
 on your first deploy run
