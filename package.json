@@ -21,7 +21,7 @@
     "marked": "^0.3.5",
     "samjs": "^0.2.1",
     "samjs-auth": "^0.2.1",
-    "samjs-files": "^0.2.2"
+    "samjs-files": "^0.2.3"
   },
   "devDependencies": {
     "babel-core": "^6.4.0",

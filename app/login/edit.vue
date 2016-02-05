@@ -29,7 +29,7 @@ module.exports =
       @file = file
       @files.get("#{file}.md")
       .then (result) =>
-        @input = result
+        @input = result if result?
         @$nextTick => @state.active = false
         @$refs.modal.open()
     onScroll: (val) ->
