@@ -27,7 +27,7 @@ module.exports =
   methods:
     open: (file) ->
       @file = file
-      @files.get("./app/#{file}.md")
+      @files.get("#{file}.md")
       .then (result) =>
         @input = result
         @$nextTick => @state.active = false
@@ -38,7 +38,7 @@ module.exports =
       invisibleHeight = @$els.out.scrollHeight-@$els.out.clientHeight
       @$els.out.scrollTop = percentage * invisibleHeight
     click: ->
-      @files.set(path:"./app/#{@file}.md", data:@input)
+      @files.set(path:"#{@file}.md", data:@input)
       .then (result) =>
         @state.active = false
         @state.saved = true

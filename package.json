@@ -1,7 +1,7 @@
 {
   "name": "samjs-little-cms",
   "description": "A little cms meant for nearly static content.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/samjs/samjs-little-cms",
   "author": {
     "name": "Paul Pflugradt",
@@ -10,9 +10,8 @@
   "engines": {
     "node": "*"
   },
-  "main": "index.js",
+  "main": "server/deploy/index.js",
   "dependencies": {
-    "coffee-script": "^1.10.0",
     "jade": "^1.11.0",
     "jstransformer-marked": "^1.0.1",
     "koa": "^1.1.2",
@@ -20,10 +19,9 @@
     "koa-spa": "^0.1.3",
     "koa-static": "^2.0.0",
     "marked": "^0.3.5",
-    "nodemon": "^1.8.1",
     "samjs": "^0.2.1",
     "samjs-auth": "^0.2.1",
-    "samjs-files": "^0.2.1"
+    "samjs-files": "^0.2.2"
   },
   "devDependencies": {
     "babel-core": "^6.4.0",
@@ -39,8 +37,10 @@
     "imports-loader": "^0.6.5",
     "jade-loader": "^0.8.0",
     "node-sass": "^3.4.2",
+    "nodemon": "^1.8.1",
     "normalize.css": "^3.0.3",
     "parallelshell": "^2.0.0",
+    "pkg-json": "0.0.2",
     "rimraf": "^2.5.0",
     "samjs-auth-client": "^0.2.1",
     "samjs-client": "^0.2.1",
@@ -73,11 +73,15 @@
   ],
   "readmeFilename": "README.md",
   "scripts": {
-    "clean": "rimraf app_deploy/ && mkdir app_deploy",
+    "clean": "rimraf deploy/app deploy/server deploy/app_build",
     "prebuild": "npm run clean",
-    "build": "NODE_ENV=production webpack",
+    "build:server": "coffee --compile --output deploy/server/ server/",
+    "build:static": "cp -R resources deploy/ && cp -R app deploy/ && cp package.json .gitignore deploy/ && sed -i 's!app_build$!app_build/*.html!' deploy/.gitignore && cd deploy/ && pkg-json set main server/index.js",
+    "build:webpack": "NODE_ENV=production webpack",
+    "build": "parallelshell \"npm run build:webpack\" \"npm run build:server\" \"npm run build:static\"",
+    "deploy": "npm run build && cd deploy && git add . && git commit -m 'deploy' && git push deploy",
     "install": "NODE_ENV=production npm install",
-    "start": "NODE_ENV=production nodemon server/index.coffee",
+    "serve": "NODE_ENV=production node deploy/server/index.js",
     "watch": "parallelshell \"npm run watch:webpack\" \"npm run watch:server\"",
     "watch:webpack": "webpack --watch",
     "watch:server": "nodemon --watch server server/index.coffee"

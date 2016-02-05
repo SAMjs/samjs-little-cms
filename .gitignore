@@ -3,7 +3,7 @@ node_modules
 *.sublime-workspace
 npm-debug.log
 app_build
-app_deploy
+deploy
 server.config
 *.pdf
 nohup.out

@@ -69,9 +69,8 @@ module.exports =
       @state = "finished"
       @$nextTick =>
         @$els.finished.focus()
-    focusPw: ->
-      @$refs.pwinput.focus()
-    finished: ->
+    focusPw: @$refs.pwinput.focus
+    finished: document.location
     saveUser: ->
       @samjs.auth.createRoot name: @$refs.nameinput.value, pwd: @$refs.pwinput.value
       .then @goFinished

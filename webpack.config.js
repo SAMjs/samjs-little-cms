@@ -55,7 +55,7 @@
         }
       }), new webpack.optimize.OccurenceOrderPlugin, new ExtractTextPlugin("[name].css")
     ];
-    module.exports.output.path = "./app_deploy";
+    module.exports.output.path = "./deploy/app_build";
     module.exports.module.loaders.push({
       test: /\.css$/,
       loader: ExtractTextPlugin.extract("style", "css")
