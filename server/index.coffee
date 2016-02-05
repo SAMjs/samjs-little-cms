@@ -44,11 +44,13 @@ samjs.state.onceStarted.then ->
   index = "#{p.app_build}/index.html"
   if samjs.io?
     samjs.io.sockets.emit "reload"
-server.listen(port)
+
 
 ## IF IN DEV MODE
 if process.env.NODE_ENV != "production"
-
+  server.listen(port)
   fs.watch p.app_build, {persistent:false}, ->
     if samjs.io?
       samjs.io.sockets.emit "reload"
+else
+  server.listen(port,"localhost")
