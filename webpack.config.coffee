@@ -1,4 +1,3 @@
-# out: webpack.config.js
 webpack = require "webpack"
 
 module.exports =
@@ -19,6 +18,11 @@ module.exports =
       { test: /\.eot\??(\d*)$/,    loader: "file" }
       { test: /\.svg\??(\d*)$/,    loader: "file" }
     ]
+    postLoaders: [
+      { test: /vue-icons/, loader: "callback-loader"}
+    ]
+  callbackLoader:
+    require("vue-icons/icon-loader")(["material-vpn_key","material-person","material-mode_edit","material-save"])
 if process.env.NODE_ENV == "production"
   ExtractTextPlugin = require("extract-text-webpack-plugin")
   module.exports.plugins = [

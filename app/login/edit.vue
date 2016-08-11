@@ -1,35 +1,54 @@
-<template lang="jade">
-  modal#edit(v-ref:modal style="background:white;min-width:200px;height:80%;width:80%;min-height:20.2rem")
-    .modal-content
-      textarea(v-el:md @scroll="onScroll" v-model="input" @close="onClose" debounce="300")
-      .output.main(v-el:out v-html="input | marked")
-    button.btn.btn-save.btn-floating.btn-large.mdi-content-save.mdi-2x(
-      @click="click"
-      v-bind:class="{disabled:!state.active}"
-      v-bind:disabled="!state.active"
-      tabindex="0") Save
+<template lang="pug">
+  modal(v-ref:modal,style="width:80%;height:80%")
+    .modal-content.row(style="height:calc(100% - 78px);")
+      .col.s12.m6(style="height:100%")
+        textarea(
+          v-el:md
+          @scroll="onScroll"
+          v-model="input"
+          @close="onClose"
+          @input="onChange"
+          style="height:100%;resize:none"
+          )
+      .col.s12.m6(style="height:100%")
+        .output.main(v-el:out v-html="content" style="height:100%;overflow:auto")
+    .modal-footer(style="text-align:right")
+      button.btn.btn-save.btn-floating(
+        @click="click"
+        v-bind:class="{disabled:!state.active}"
+        v-bind:disabled="!state.active"
+        style="margin-right:20px"
+        tabindex="0")
+        icon(name="material-save")
 </template>
 
 <script lang="coffee">
 samjs = require "./samjs.coffee"
+marked = require "marked"
 module.exports =
   components:
     "modal": require "vue-materialize/modal"
+    "icon": require "vue-materialize/icon"
   replace: false
   data: ->
     state:
       active: false
       saved: false
     file: null
+    content: ""
     input: ""
     files: new samjs.Files("markdownFiles")
   el: -> document.createElement "div"
   methods:
+    onChange: (value) ->
+
     open: (file) ->
       @file = file
       @files.get("#{file}.md")
       .then (result) =>
-        @input = result if result?
+        if result?
+          @input = result
+          @content = marked(result)
         @$nextTick => @state.active = false
         @$refs.modal.open()
     onScroll: (val) ->
@@ -46,29 +65,15 @@ module.exports =
       if @state.saved
         document.location.reload()
   watch:
-    "input": ->
-      @state.active = true
-  filters:
-    marked: require "marked"
-</script>
+    "input": (value) ->
+      @next = =>
+        @state.active = true
+        @content = marked(value)
+      unless @timeout
+        @next()
+        @timeout = setTimeout((=>
+          @timeout = null
+          @next()
+          ),300)
 
-<style lang="stylus">
-#edit
-  .btn-save
-    position absolute
-    top 20px
-    right 20px
-  .modal-content
-    position absolute
-    bottom 0
-    top 0
-    left 0
-    right 0
-    display flex
-  .modal-content textarea,
-  .modal-content .output
-    flex 1 1
-  .modal-content .output
-    overflow hidden
-    padding-left 8px
-</style>
+</script>

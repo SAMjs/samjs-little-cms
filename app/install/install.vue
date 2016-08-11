@@ -1,5 +1,5 @@
-<template lang="jade">
-#install-container
+<template lang="pug">
+#install-container.container
   .card.black-text(
     v-el:start
     tabindex="-1"
@@ -13,27 +13,27 @@
       a(@click="start") Let's start
   .card.black-text(transition="slide" v-if="state == 'user'")
     .card-content
-      span.card-title.black-text Please create a root user
-      p.
-        Please create a root user now.
-      input-field(
-        v-ref:nameinput
-        input-id="username"
-        label="Username"
-        icon="icon-user"
-        v-bind:on-confirm="focusPw"
-      )
-      input-field(
-        v-ref:pwinput
-        input-id="password"
-        v-bind:validate="validatePw"
-        data-error="use at least 8 characters"
-        label="Password"
-        type="password"
-        icon="icon-user"
-        v-bind:on-confirm="saveUser"
-      )
-    .card-action.right-align(v-bind:v-if="$refs.nameinput.value && $refs.pwinput.isValid")
+      span.card-title.black-text Creation of root user
+      .row
+        input-field.s12(
+          readonly
+          v-bind:value="username"
+          label="Username"
+        )
+          icon.prefix(slot="icon" name="material-person")
+        input-field.s12(
+          autofocus
+          v-ref:pwinput
+          v-bind:validate="validatePw"
+          data-error="use at least 8 characters"
+          label="Password"
+          type="password"
+          @valid="onValid"
+          @invalid="onInvalid"
+          @confirm="saveUser"
+        )
+          icon.prefix(slot="icon" name="material-vpn_key")
+    .card-action.right-align(v-if="isValid")
       a(@click="saveUser") Save
   .card.black-text(
     v-el:finished
@@ -49,39 +49,43 @@
       a(@click="finished") Done
 </template>
 <script lang="coffee">
-{Velocity} = require("vue-materialize")
+Velocity = require("velocity-animate")
 
 module.exports =
   components:
     "input-field": require "vue-materialize/input-field"
+    "icon": require "vue-materialize/icon"
   data: ->
     state: "start"
-    dberror: ""
-    dbsuccess: ""
+    username: ""
+    isValid: false
     samjs: {}
   methods:
-    goUser: ->
-      @state = "user"
-      @$refs.nameinput.value = "root"
-      @$nextTick =>
-        @focusPw()
+    finished: ->
+      document.location.reload()
+    onValid: ->
+      @isValid = true
+    onInvalid: ->
+      @isValid = false
     goFinished: ->
       @state = "finished"
       @$nextTick =>
         @$els.finished.focus()
-    focusPw: -> @$refs.pwinput.focus()
-    finished: document.location
     saveUser: ->
-      @samjs.auth.createRoot name: @$refs.nameinput.value, pwd: @$refs.pwinput.value
+      @samjs.auth.createRoot @$refs.pwinput.value
       .then @goFinished
     validatePw: (pw) ->
       return false if pw.length < 8
       return true
     start: ->
       @samjs.install.isInConfigMode()
-      .then @goUser
+      .then (nsp) =>
+        @samjs.io.nsp(nsp).getter "auth.getInstallationInfo"
+      .then (info) =>
+        @username = info.rootUser
+        @state = "user"
   ready: ->
-    @$els.start.focus()
+    @$els.start?.focus()
   transitions:
     "slide":
       enter: (el, done) ->

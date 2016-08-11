@@ -3,7 +3,7 @@ unless process.env.NODE_ENV == "production"
 samjs = require "samjs"
 sendfile = require "koa-sendfile"
 serve = require "koa-static"
-jade = require "jade"
+pug = require "pug"
 fs = require "fs"
 path = require "#{__dirname}/path"
 index = ""
@@ -19,15 +19,15 @@ p =
   resources: path("./resources")
 
 fs.writeFileSync "#{p.app_build}/index.html",
-  jade.renderFile("#{p.app}/index.jade")
+  pug.renderFile("#{p.app}/index.pug")
 fs.writeFileSync "#{p.app_build}/install.html",
-  jade.renderFile("#{p.app}/install/install.jade")
+  pug.renderFile("#{p.app}/install/install.pug")
 
 koa = require("koa")()
 koa.use serve(p.app_build,index:false,maxage: maxage)
 koa.use serve(p.resources,hidden:true)
 koa.use ->
-  yield sendfile.call(@, index)
+  yield sendfile(@, index)
 
 server = require("http").createServer(koa.callback())
 

@@ -1,37 +1,42 @@
-<template lang="jade">
-modal#login(style="max-width:30rem;min-height:20.2rem" @hide="reset" v-ref:modal)
+<template lang="pug">
+modal(@hide="reset" v-ref:modal)
   .modal-content.center-align
     h4 Login
-    input-field(
-      label="Benutzername"
-      icon="mdi-social-person"
-      autofocus="true"
-      input-id="name"
-      @change="nameChanged"
-      @confirm="focusPw"
-      v-bind:value.sync="name"
+    .row(style="text-align:left")
+      input-field.s12(
+        label="Username"
+        autofocus
+        @change="nameChanged"
+        @confirm="focusPw"
+        v-bind:value.sync="name"
       )
-    input-field(
-      label="Passwort"
-      type="password"
-      input-id="password"
-      @change="pwChanged"
-      @confirm="click"
-      v-bind:value.sync="password"
-      v-ref:password
+        icon.prefix(slot="icon" name="material-person")
+    .row(style="text-align:left")
+      input-field.s12(
+        v-bind:validate="validatePw"
+        label="Password"
+        type="password"
+        @change="pwChanged"
+        @confirm="click"
+        v-bind:value.sync="password"
+        v-ref:password
       )
-    .preloader-wrapper.small(v-bind:class="{active:state.active}")
-      .spinner-layer.spinner-blue-only
-        .circle-clipper.left
-          .circle
-        .gap-patch
-          .circle
-        .circle-clipper.right
-          .circle
-    button.btn(@click="click" v-bind:disabled="state.active" v-bind:class="{disabled:state.active||!state.complete}" tabindex="0") Absenden
-
-
-    .failed(v-show="state.failed") Failed
+        icon.prefix(slot="icon" name="material-vpn_key")
+    .row
+      .col.s4.m4
+        .preloader-wrapper.small(v-bind:class="{active:state.active}")
+          .spinner-layer.spinner-blue-only
+            .circle-clipper.left
+              .circle
+            .gap-patch
+              .circle
+            .circle-clipper.right
+              .circle
+      .col.s8.m4
+        waves
+          button.btn(@click="click" v-bind:disabled="state.active" v-bind:class="{disabled:state.active||!state.complete}" tabindex="0") Absenden
+      .col.s12.m4
+        .failed.red-text(v-show="state.failed") Failed
 </template>
 
 <script lang="coffee">
@@ -42,6 +47,8 @@ module.exports =
   components:
     "input-field": require "vue-materialize/input-field"
     "modal": require "vue-materialize/modal"
+    "icon": require "vue-materialize/icon"
+    "waves": require "vue-materialize/waves"
   data: ->
     name: ""
     password: ""
@@ -72,6 +79,7 @@ module.exports =
         @reject = null
         @$refs.modal.close()
       .catch (e) =>
+        console.log e
         @password = ""
         @focusPw()
         setTimeout (=>@state.failed = true), 200
@@ -94,18 +102,3 @@ module.exports =
       else
         @state.complete = false
 </script>
-
-<style lang="stylus">
-#login
-  &>.modal-content
-    &>h4
-      margin-bottom: 3rem
-    &>.preloader-wrapper
-      position absolute
-      bottom 1.7rem
-      left 6.5rem
-    &>.failed
-      position: absolute
-      bottom 2.1rem
-      right 2rem
-</style>

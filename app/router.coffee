@@ -50,7 +50,7 @@ module.exports = new class Router
       element = null
       if e.target.nodeName == "A"
         element = e.target
-      else if e.target.parentElement.nodeName == "A"
+      else if e.target.parentElement?.nodeName == "A"
         element = e.target.parentElement
       if element?.baseURI.indexOf(element.host)>-1
         @navigate element.pathname

@@ -1,10 +1,13 @@
-<template lang="jade">
+<template lang="pug">
   button.btn.btn-edit.btn-floating.btn-large.mdi-editor-mode-edit.mdi-2x(@click="click" tabindex="0")
+    icon(name="material-mode_edit")
 </template>
 
 <script lang="coffee">
 
 module.exports =
+  components:
+    "icon": require "vue-materialize/icon"
   replace: false
   props:
     filename:
